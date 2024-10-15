@@ -1,0 +1,72 @@
+---
+title: "HTML document"
+format: html
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+This is a HTML document.
+
+
+```{stata}
+*| label: fig-figuretag1
+*| fig-cap: From code chunck
+*| echo: false
+
+qui webuse auto, clear
+scatter price mpg
+```
+
+@fig-figuretag1 worked well from code chunk. 
+
+and @tbl-tabletag1 embedded after being produced in a the code chunk below.
+
+```{stata}
+*| include: false
+table foreign, stat(mean price) stat(sd price)
+collect layout (foreign) (result)
+collect style cell result, font("Trade Gothic Next", bold size(12))
+collect export tab1, as(html) replace
+```
+
+Even here we refer to the same html table @tbl-tabletag1 
+
+::: {#tbl-tabletag1}
+
+```{stata}
+*| echo: false
+*| output: asis
+display "```{=html}"
+type tab1.html
+display "```"
+```
+
+Produced dynamically from formatted html table
+:::
+
+```{stata}
+*| echo: false
+*| include: false
+table foreign, stat(mean price) stat(sd price)
+collect layout (foreign) (result)
+*collect style cell result, font("Trade Gothic Next", bold size(12))*
+collect export tab2, as(md) replace
+```
+
+And @tbl-tabletag2 was produced from Markdown table
+
+::: {#tbl-tabletag2}
+
+```{stata}
+*| echo: false
+*| output: asis
+type tab2.md
+```
+
+Produced dynamically from md table
+:::
+
+
+
